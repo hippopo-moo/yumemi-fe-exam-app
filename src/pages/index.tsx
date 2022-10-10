@@ -1,27 +1,22 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import { SelectInputSection } from '../components/SelectInputSection'
-import { GraphSection } from '../components/GraphSection'
-import { SWRConfig } from 'swr'
-import { fetcher } from '../libs/fetcher'
+import type { NextPage } from "next"
+import { FormProvider } from "react-hook-form"
+import { ChartGraphSection } from "src/components/ChartGraphSection"
+import { Header } from "src/components/Header"
+import { SelectInputSection } from "src/components/SelectInputSection"
+import { usePrefectureCheckboxForm } from "src/hooks/prefectureCheckbox"
 
-const Home: NextPage = () => {
+const HomePage: NextPage = () => {
+  const { methods } = usePrefectureCheckboxForm()
+
   return (
-   <>
-
-    <SWRConfig value={{
-      suspense:true,
-      fetcher
-    }}>
-
-      <header>都道府県人口推移アプリ</header>
-      <SelectInputSection/>
-      {/* <GraphSection/> */}
-    </SWRConfig>
-   </>
+    <>
+      <Header />
+      <FormProvider {...methods}>
+        <SelectInputSection />
+        <ChartGraphSection />
+      </FormProvider>
+    </>
   )
 }
 
-export default Home
+export default HomePage

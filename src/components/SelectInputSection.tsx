@@ -1,25 +1,20 @@
-import { FC, JSXElementConstructor, ReactElement, ReactFragment, ReactPortal } from "react"
-import useSWR from "swr"
-import {useForm, useWatch} from 'react-hook-form'
-
-export const SelectInputSection: FC = () =>  {
-  const {data} = useSWR("/api/v1/prefectures")
-  console.log(data.result);
-  return(
+import { FC, Suspense } from "react"
+import { ErrorBoundary } from "react-error-boundary"
+import { PrefectureCheckboxes } from "src/components/PrefectureCheckboxes"
+import { ErrorBox } from "./ErrorBox"
+export const SelectInputSection: FC = () => {
+  return (
     <>
-      <p>
-        SelectInputSection
-      </p>
-
-      {data.result.map((item: any, index: any) => {
-        return (
-          <div key={index}>
-            <label>{item.prefName}
-              <input type="checkbox" id={item.prefCode}/>
-            </label>
-          </div>
-        )
-        })}
+      <section className="g-box-container">
+        <h2>都道府県</h2>
+        <div>
+          <ErrorBoundary FallbackComponent={ErrorBox}>
+            <Suspense fallback={<div>読み込み中です。</div>}>
+              <PrefectureCheckboxes />
+            </Suspense>
+          </ErrorBoundary>
+        </div>
+      </section>
     </>
   )
 }
